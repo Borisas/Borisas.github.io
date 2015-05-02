@@ -1,0 +1,21 @@
+div#main{
+	width: 60%;
+	height: 100%;
+	margin: 100px auto;
+	background: white;
+	box-shadow: 10px 10px 5px #888888;
+	border:2px solid black;
+}
+div#logo{
+	width: 60%;
+	height: 100px;
+	margin: 0px auto;
+	background: white;
+	font-size:80px;
+	font-color: #FFFFFF;
+	text-align:center;
+	text-shadow: 2px 2px #000000;
+}
+div#menu{
+
+}
