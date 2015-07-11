@@ -8,8 +8,8 @@ div#main{
 	margin-left:auto;
 	margin-right:auto;
 	background: white;
-	border-left: 10px solid #e3e4e9;
-	border-right: 10px solid #e3e4e9;
+	border-left: 0.7vw solid #e3e4e9;
+	border-right: 0.7vw solid #e3e4e9;
 	top: 0px;
 	left: 0px;
 	right: 0px;
@@ -22,7 +22,7 @@ div#logo{
 	left:0px;
 	position:absolute;
 	color: gray;
-	border-bottom: 10px solid #e3e4e9;
+	border-bottom: 0.7vw solid #e3e4e9;
 	width: 20%;
 	font-family: 'Logo-font';
 	font-size: 1.9vw;
