@@ -48,7 +48,7 @@ a#button{
 	position: absolute;
 	text-decoration: none;
 	color: #a8a8a8;
-	font-size: 25px;
+	font-size: 2vw;
 }
 a#button:hover{
 	background-color: #e3e4e9;
