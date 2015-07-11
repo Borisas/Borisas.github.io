@@ -13,7 +13,6 @@ div#main{
 	top: 0px;
 	left: 0px;
 	right: 0px;
-	--background-color: #e3e4e9;
 	position: absolute;
 	z-index: 2;
 }
