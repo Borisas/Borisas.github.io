@@ -24,8 +24,8 @@ div#logo{
 	color: gray;
 	border-bottom: 10px solid #e3e4e9;
 	width: 20%;
-	font-family: 'Logo-font'; /*a name to be used later*/
-	font-size: 27px;
+	font-family: 'Logo-font';
+	font-size: 1.9vw;
 }
 div#menu{
 	position: absolute;
