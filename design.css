@@ -1,20 +1,26 @@
 div#main{
 	width: 60%;
 	height: 100%;
-	margin: 100px auto;
+	margin-left:auto;
+	margin-right:auto;
 	background: white;
-	box-shadow: 10px 10px 5px #888888;
-	border:2px solid black;
+	border-left: 10px solid #e3e4e9;
+	border-right: 10px solid #e3e4e9;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	--background-color: #e3e4e9;
+	position: absolute;
 }
 div#logo{
-	width: 60%;
-	height: 100px;
-	margin: 0px auto;
-	background: white;
-	font-size:80px;
-	font-color: #FFFFFF;
-	text-align:center;
-	text-shadow: 2px 2px #000000;
+	top:0px;
+	left:0px;
+	position:absolute;
+	color: gray;
+	border-bottom: 10px solid #e3e4e9;
+	width: 20%;
+	font-family: 'CF Spaceship'; /*a name to be used later*/
+  src: url('https://Borisas.github.io/assets/font.ttf'); /*URL to font*/
 }
 div#menu{
 
