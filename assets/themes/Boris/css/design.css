@@ -1,6 +1,6 @@
 @font-face{
   font-family: 'Logo-font'; /*a name to be used later*/
-  src: url('https://Borisas.github.io/assets/font.ttf'); /*URL to font*/
+  src: url('https://Borisas.github.io/assets/themes/Boris/other/font.ttf'); /*URL to font*/
 }
 div#main{
 	width: 70%;
