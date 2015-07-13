@@ -7,10 +7,15 @@
 		<script src="script.js"></script>
 	</head>
 	<body>
-		<div id="main"> {{ content }}</div>
+		<div id="main">{{ content }}</div>
 		<div id="logo"><b>{{ site.title }}<b></div>
 		<div id="menu">
-
+			<a href = " {{ HOME_PATH }}" id="button">Home</a><br>
+			<a href = "" id = "button">Archive</a><br>
+			<a href = "" id = "button">Tags</a><br>
+			<a href = "" id = "button">Pages</a><br>
+			<a href = "" id = "button">About</a><br>
+			{{ site.html_pages }}
 		</div>
 	</body>
 </html>
