@@ -1,0 +1,128 @@
+<html>
+<meta charset="UTF-8">
+<head>
+    <title>Šešta</title>
+</head>
+<style>
+@font-face {
+    font-family: FireSans;
+    src: url("../font.otf") format("opentype");
+}
+div.main{
+    margin:auto;
+    border-left: 2px solid black;
+    width: 70%;
+}
+div.req{
+    margin:auto;
+    width: 55%;
+    border-bottom: 2px solid black;
+    line-height: 30px;
+    padding-left: 5%;
+    padding-right: 5%;
+    font-size:125%;
+    color: grey;
+    font-family: FireSans;
+}
+h1{
+    text-align: center;
+    font-weight: normal;
+    font-family: FireSans;
+}
+h2{
+    text-align:center;
+    font-weight:normal;
+    font-size:150%;
+    font-family: FireSans;
+    /*left: 20%;*/
+}
+h3{
+    margin:auto;
+    text-align:center;
+    font-weight:normal;
+    font-size:110%;
+    width:80%;
+    font-family: FireSans;
+}
+div.line{
+    border-bottom: 1px solid black;
+    width: 80%;
+    margin:auto;
+}
+a.back{
+    /*padding:5%;*/
+    padding:4px;
+    margin-left:10px;
+    text-decoration: none;
+    color:black;
+    font-size:150%;
+    width:40px;
+    border-bottom: 2px solid white;
+    -o-transition:.5s;
+    -ms-transition:.5s;
+    -moz-transition:.5s;
+    -webkit-transition:.5s;
+    transition:.5s;
+    font-family: FireSans;
+}
+a.back:hover{
+    background-color:#CACACA;
+    color:white;
+}
+table{
+    width:40%;
+    margin:auto;
+    text-align: center;
+    font-family: FireSans;
+    font-size:110%;
+}
+tr:hover{
+    background-color: #EAEAEA;
+}
+</style>
+<body>
+
+    <div class='main'>
+        <h1>Šešta užduotis</h1>
+        <h3>
+            Suskaičiuoti n keturkampių plotų sumą ir vidurkį.
+        </h3>
+        <br/>
+        <br/>
+        <div class='line'></div>
+        <h2>
+            Reikės:
+        </h2>
+        <div class='req'>
+            <ul>
+                <li>cout
+                <li>cin
+                <li>masyvai
+                <li>class (klasės)
+            </ul>
+        </div>
+        <h2>
+            Pavyzdiniai atsakymai:
+        </h2>
+        <table>
+          <tr>
+            <td style="border-bottom: 2px solid black;">n</td>
+            <td style="border-bottom: 2px solid black;">Kraštinės</td>
+            <td style="border-bottom: 2px solid black;">Atsakymas</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>10   20<br/>5   7</td>
+            <td>Suma: 235<br/>Vidurkis: 117.5</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>5   4<br/>15   17<br/>3   3</td>
+            <td>Suma: 282<br/>Vidurkis: 94</td>
+          </tr>
+        </table>
+        <a href="../index.html" class='back'>Back</a>
+    </div>
+
+</body>
+</html>
