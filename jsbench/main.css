@@ -1,0 +1,87 @@
+
+@font-face {
+    font-family: FireSans;
+    src: url("../font.otf") format("opentype");
+}
+
+.color0 { color : #FFFFFF; }
+.color1 { color : #c4e2ff; }
+.color2 { color : #9bceff; }
+.color3 { color : #4FA3F2; }
+.color4 { color : #217BD1; }
+.colorFont { color : #042C54; }
+
+body {
+
+	background : #FFFFFF;
+}
+
+
+button {
+	min-width : 10%;
+	min-height : 3%;
+	background : #217BD1;
+	color : white;
+	border : 1px solid #217BD1;
+	font-family: FireSans;
+}
+span { 	
+	font-family: FireSans;
+}
+button:hover {
+	background : #FFFFFF;
+	color : #217BD1;
+	border : 1px solid #217BD1;
+}
+
+span.button > button {
+	width : 30%;
+	height : 5%;
+}
+
+div.blockParent {
+	width : 60%;
+}
+
+div.block {
+	padding : 1%;
+	margin : 1%;
+	border : 1px solid #9BCEFF;
+}
+
+span.info {
+	width : 65%;
+	color:#042C54;
+	margin-left : 1%;
+}
+
+input.testname {
+	width : inherit;
+	border-top : 0;
+	border-left : 0;
+	border-right : 0;
+	border-bottom : 2px solid #217BD1;
+	color : #042C54;
+	font-family: FireSans;
+}
+input.testname:focus {
+	outline:none;
+	background : #c4e2ff;
+}
+
+
+textarea.code {
+	margin : 3%;
+	width : 94%;
+	height : 200px;
+	resize : none;
+	border : 1px solid #217BD1;
+}
+textarea.code:focus {
+	outline : none;
+}
+
+.hidden {
+	display : none;
+}
+.

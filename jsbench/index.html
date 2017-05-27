@@ -1,0 +1,34 @@
+<html>
+<meta charset="UTF-8">
+<head>
+    <title>Borisas Home</title>
+    <script src='main.js'></script>
+    <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+
+<body>
+	<button onclick='createTestBlock()'>Add Test</button> <button onclick='runTests()'>RunTest</button>
+
+    <div class ='blockParent'>
+      <div class='block'>
+        <span class='button'>
+          <button onclick='hide("setupblock")'>Setup block</button>
+        </span>
+        <span class='info'>Execute before every block; Not part of the benchmark.</span>
+        <br/>
+        <textarea class='code' id='setupblock' style='display:none;'></textarea>
+      </div>
+
+      <div class='block'>
+        <span class='button'>
+          <button onclick='hide("boilerplate")'>Boilerplate block</button>
+        </span>
+        <span class='info'>Executed before every block; Part of the benchmark.</span>
+        <br/>
+        <textarea class='code' id='boilerplate' style='display:none;'></textarea>
+      </div>
+    </div>
+
+
+</body>
+</html>
