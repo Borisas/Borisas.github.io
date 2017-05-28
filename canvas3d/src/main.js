@@ -8,6 +8,13 @@ window.onload = () => {
 
 var c = null;
 
+var mouseleftStart = null;
+var mouseleft = false;
+
+
+var mouserightStart = null;
+var mouseright = false;
+
 function init () {
 	renderer = new Renderer3D();
 	renderer.init();
@@ -15,57 +22,84 @@ function init () {
 	document.body.appendChild(renderer.dom);
 	var x = renderer.dom.getContext('2d');
 
+	mouseleftStart = p2(0,0);
+	mouserightStart = p2(0,0);
 
-	var cube = new Obj3D();
-	var v = [];
 
-	v.push(p3(-1,1,-1));	//A		0
-	v.push(p3(-1,-1,-1));	//B		1
-	v.push(p3(1,-1,-1));	//C		2
-	v.push(p3(1,1,-1));		//D		3
-	v.push(p3(-1,1,1));		//A1	4
-	v.push(p3(-1,-1,1));	//B1	5
-	v.push(p3(1,-1,1));		//C1	6
-	v.push(p3(1,1,1));		//D1	7
-	cube.vertexes = v;
+	var cube = createCube(3,3,3);
 
-	var l = [];
-	l.push(line(0,1));
-	l.push(line(0,3));
-	l.push(line(0,4));
-	l.push(line(1,2));
-	l.push(line(1,5));
-	l.push(line(2,3));
-	l.push(line(2,6));
-	l.push(line(3,7));
-	l.push(line(4,7));
-	l.push(line(4,5));
-	l.push(line(5,6));
-	l.push(line(6,7));
-	cube.lines = l;
-
-	cube.position = p3 ( -3, 0, 20);
+	cube.position = p3 ( 10,5, 20);
 
 	c = cube;
 
 	renderer.objects.push(cube);
 
-	// renderer.render();
+	renderer.dom.addEventListener('contextmenu', function (e) {
+		e.preventDefault();
+	});
+	renderer.dom.addEventListener('mousedown', function (e) {
+		e.preventDefault();
+
+		if ( e.button == 0 ) {
+			//LEFT
+		}
+		else if ( e.button == 2 ) {
+			//RIGHT
+			mouserightStart.x = e.offsetX;
+			mouserightStart.y = e.offsetY;
+			mouseright = true;
+		}
+	});
+	renderer.dom.addEventListener('mouseup', function (e) {
+		e.preventDefault();
+
+		if ( e.button == 0 ) {
+			//LEFT
+		}
+		else if ( e.button == 2 ) {
+			//RIGHT
+			mouserightStart.x = 0;
+			mouserightStart.y = 0;
+			mouseright = true;
+		}
+	});
+	renderer.dom.addEventListener('mousemove', function (e) {
+
+		if ( e.button == 2 && mouseright ) {
+			var cposx = e.offsetX - mouserightStart.x;
+			var cposy = e.offsetY - mouserightStart.y;
+			renderer.camera.x += cposx/20;
+			renderer.camera.y += cposy/20;
+
+			mouserightStart.x = e.offsetX;
+			mouserightStart.y = e.offsetY;
+
+		}
+
+	});
+
 	frame();
 }
+
+var dt = 0;
+var lt = 0;
 
 function frame () {
 
 	requestAnimationFrame(frame);
 
-
 	update();
 	draw();
+
+	dt = performance.now()-lt;
+	lt = performance.now();
 }
 
 function draw () {
 
+	renderer.render();
 }
+
 
 var angle = 0;
 
@@ -74,10 +108,9 @@ function d2r (d){
 };
 
 function update () {
-	renderer.render();
 
-	c.position.x = 3 * Math.sin(angle);
-	c.position.y = 3 * Math.cos(angle);
+	// c.rotation.z = angle;
+	c.rotation.y = angle;
 
-	angle += d2r(0.5);
+	angle += d2r(90)*(dt/1000);
 }
