@@ -16,7 +16,7 @@ function Renderer3D() {
 
 	this.camera = p( 10,5,0 );
 	this.fov = 90;
-	this.crot = 0;
+	this.crot = p(d2r(20),0,0);
 };
 
 Renderer3D.prototype.init = function () {
@@ -40,6 +40,9 @@ Renderer3D.prototype.render = function () {
 	ctx.fillStyle='#ffffff';
 	ctx.fillRect(0,0,this.width,this.height);
 
+	var ccos = Math.cos(this.crot.x);
+	var csin = Math.sin(this.crot.y);
+
 	for ( var i in this.objects ) {
 
 		var o = this.objects[i];
@@ -47,26 +50,33 @@ Renderer3D.prototype.render = function () {
 
 		for ( var j = 0; j < o.lines.length; j++ ) {
 
+			var c = p3 ( this.camera.x, this.camera.y, this.camera.z);
+
+
 			var l = o.getLinePosition(j);
 
-			var rs = (l.s.z+op.z-this.camera.z) * Math.sin(d2r(this.fov));
+			var rs = (l.s.z+op.z-c.z) * Math.sin(d2r(this.fov));
 
 			var modxs = this.width/rs,
 				modys = this.height/rs;
 
-			var drawps = p2((l.s.x+op.x-this.camera.x) * modxs + this.width/2,
-			(l.s.y+op.y-this.camera.y) * modys + this.height/2);
+			var drawps = p2((l.s.x+op.x-c.x) * modxs + this.width/2,
+			(l.s.y+op.y-c.y) * modys + this.height/2);
 
-			var re = (l.e.z+op.z-this.camera.z) * Math.sin(d2r(this.fov));
+
+
+			var re = (l.e.z+op.z-c.z) * Math.sin(d2r(this.fov));
 
 			var modxe = this.width/re,
 				modye = this.height/re;
 
-			var drawpe = p2((l.e.x+op.x-this.camera.x) * modxe + this.width/2, (l.e.y+op.y-this.camera.y) * modye+this.height/2);
+			var drawpe = p2((l.e.x+op.x-c.x) * modxe + this.width/2, (l.e.y+op.y-c.y) * modye+this.height/2);
 
 			drawLine(this.context, drawps,drawpe);
 		}
 		for ( var j = 0; j < o.faces.length; j++ ){
+
+			var c = p3 ( this.camera.x, this.camera.y, this.camera.z);
 
 			var f = o.getFacePosition(j);
 			var poly = [];
@@ -75,12 +85,12 @@ Renderer3D.prototype.render = function () {
 
 				var fp = f.v[k];
 
-				var r = (fp.z+op.z-this.camera.z) * Math.sin(d2r(this.fov));
+				var r = (fp.z+op.z-c.z) * Math.sin(d2r(this.fov));
 
 				var modx = this.width/r,
 				 	mody = this.height/r;
 
-				var pointp = p2 ( (fp.x+op.x-this.camera.x) * modx + this.width/2, (fp.y+op.y-this.camera.y) * mody+this.height/2);
+				var pointp = p2 ( (fp.x+op.x-c.x) * modx + this.width/2, (fp.y+op.y-c.y) * mody+this.height/2);
 				poly.push(pointp);
 			}
 			fillPoly(this.context, poly,f.c);
@@ -98,24 +108,24 @@ function Obj3D () {
 	this.position = p(0,0,0);
 	this.rotation = p(0,0,0);
 
-	this.getLinePosition = function (id) {
+	this.getLinePosition = function (id,camrot) {
 		if ( id >= this.lines.length )
 			return null;
 
 		var l = this.lines[id];
-		var v = this.getVertices();
+		var v = this.getVertices(camrot);
 		return {
 			s : p(v[l.s].x,v[l.s].y,v[l.s].z),
 			e : p(v[l.e].x,v[l.e].y,v[l.e].z)
 		};
 	};
 
-	this.getFacePosition = function (id) {
+	this.getFacePosition = function (id,camrot) {
 		if ( id >= this.faces.length)
 			return null;
 
 		var f = this.faces[id];
-		var v = this.getVertices();
+		var v = this.getVertices(camrot);
 
 		var ret = [];
 		for ( var i = 0; i < f.v.length; i++ ) {
@@ -124,12 +134,13 @@ function Obj3D () {
 		return { v : ret, c : f.color };
 	}
 
-	this.getVertices = function () {
+	this.getVertices = function (addrot) {
+		addrot = addrot || p(0,0,0);
 
 		var v = this.vertexes;
-		v = rot3X(v,this.rotation.x);
-		v = rot3Y(v,this.rotation.y);
-		v = rot3Z(v,this.rotation.z);
+		v = rot3X(v,this.rotation.x+addrot.x);
+		v = rot3Y(v,this.rotation.y+addrot.y);
+		v = rot3Z(v,this.rotation.z+addrot.z);
 		return v;
 	};
 
@@ -185,6 +196,15 @@ function rot3Z ( v, angle ) {
 		);
 	}
 	return ret;
+}
+
+function rot3XVec ( vec, cos, sin ) {
+
+	return p3 (
+		Number(vec.x) * cos - Number ( vec.z ) * sin,
+		Number(vec.y),
+		Number(vec.x) * sin + Number ( vec.z ) * cos
+	);
 }
 
 function p2(x,y){

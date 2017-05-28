@@ -42,6 +42,9 @@ function init () {
 
 		if ( e.button == 0 ) {
 			//LEFT
+			mouseleftStart.x = e.offsetX;
+			mouseleftStart.y = e.offsetY;
+			mouseleft = true;
 		}
 		else if ( e.button == 2 ) {
 			//RIGHT
@@ -55,17 +58,30 @@ function init () {
 
 		if ( e.button == 0 ) {
 			//LEFT
+			mouseleftStart.x = 0;
+			mouseleftStart.y = 0;
+			mouseleft = false;
 		}
 		else if ( e.button == 2 ) {
 			//RIGHT
 			mouserightStart.x = 0;
 			mouserightStart.y = 0;
-			mouseright = true;
+			mouseright = false;
 		}
 	});
 	renderer.dom.addEventListener('mousemove', function (e) {
 
-		if ( e.button == 2 && mouseright ) {
+
+		if ( e.button == 0 && mouseleft ) {
+			var cposx = e.offsetX - mouseleftStart.x;
+			var cposy = e.offsetY - mouseleftStart.y;
+			c.rotation.x += cposx/100;
+			c.rotation.y += cposy/100;
+
+			mouseleftStart.x = e.offsetX;
+			mouseleftStart.y = e.offsetY;
+		}
+		else if ( e.button == 2 && mouseright ) {
 			var cposx = e.offsetX - mouserightStart.x;
 			var cposy = e.offsetY - mouserightStart.y;
 			renderer.camera.x += cposx/20;
@@ -110,7 +126,7 @@ function d2r (d){
 function update () {
 
 	// c.rotation.z = angle;
-	c.rotation.y = angle;
+	// c.rotation.y = angle;
 
 	angle += d2r(90)*(dt/1000);
 }
