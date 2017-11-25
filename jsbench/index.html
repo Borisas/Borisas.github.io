@@ -7,28 +7,48 @@
 </head>
 
 <body>
-	<button onclick='createTestBlock()'>Add Test</button> <button onclick='runTests()'>RunTest</button>
 
-    <div class ='blockParent'>
-      <div class='block'>
-        <span class='button'>
-          <button onclick='hide("setupblock")'>Setup block</button>
-        </span>
-        <span class='info'>Execute before every block; Not part of the benchmark.</span>
-        <br/>
-        <textarea class='code' id='setupblock' style='display:none;'></textarea>
-      </div>
+	<div class='testside'>
+		<div class='coreblock' id='cb0'>
+			<div class='block'>
+				<div class='title' onclick='toggledisplay("code","setup")'>Setup block</div>
+				<div class='inside' id='setup' style='display:none;'>
+					<textarea class='code' id='setup'></textarea>
+				</div>
+			</div>
+			<div class='block'>
+				<div class='title' onclick='toggledisplay("inside","boilerplate")'>Boilerplate block</div>
+				<div class='inside' id='boilerplate' style='display:none;'>
+					<textarea class='code' id='boilerplate'></textarea>
+				</div>
+			</div>
+			<!-- <div class='block' id='bt0'>
+				<div class='title' onclick='toggledisplay("code","test0")'>
+					Test0
+					<button class='remove' onclick='nobublecall(event,function(){removeBlock("bt0");})'>X</button>
+				</div>
+				<textarea class='code' id='test0' style='display:none;' onclick=''></textarea>
+			</div> -->
+		</div>
+		<div class='coreblock'id='cb1'>
+			<div class='block'>
+				<div class='button_new' onclick='addBlock()'>Add New Block</div>
+			</div>
+		</div>
+		<div class='coreblock'id='cb1'>
+			<div class='block'>
+				<div class='button_compile' onclick='runTests()'>Run Test</div>
+			</div>
+		</div>
+	</div>
 
-      <div class='block'>
-        <span class='button'>
-          <button onclick='hide("boilerplate")'>Boilerplate block</button>
-        </span>
-        <span class='info'>Executed before every block; Part of the benchmark.</span>
-        <br/>
-        <textarea class='code' id='boilerplate' style='display:none;'></textarea>
-      </div>
-    </div>
-
+	<div class='resultside'>
+		<div class='coreblock'>
+			<div class='block'>
+				<div class='button_new' onclick='console.log("1")'>Add New Block</div>
+			</div>
+		</div>
+	</div>
 
 </body>
 </html>

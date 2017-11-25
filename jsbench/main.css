@@ -16,72 +16,129 @@ body {
 	background : #FFFFFF;
 }
 
-
-button {
-	min-width : 10%;
-	min-height : 3%;
-	background : #217BD1;
-	color : white;
-	border : 1px solid #217BD1;
-	font-family: FireSans;
-}
-span { 	
-	font-family: FireSans;
-}
-button:hover {
-	background : #FFFFFF;
-	color : #217BD1;
-	border : 1px solid #217BD1;
+div.testside {
+	width:50%;
+	position:absolute;
+	top:50%;
+	left:0;
+	transform:translate(-1px,-50%);
+	border-top:1px solid #042C54;
 }
 
-span.button > button {
-	width : 30%;
-	height : 5%;
+div.resultside {
+	width : 50%;
+	position:absolute;
+	top:50%;
+	right:0;
+	transform:translate(1px,-50%);
+	border:1px solid #042C54;
 }
 
-div.blockParent {
-	width : 60%;
+div.coreblock {
+	position: relative;
+	top:0;
+	left:0;
+
+	width : 100%;
 }
 
 div.block {
-	padding : 1%;
-	margin : 1%;
-	border : 1px solid #9BCEFF;
+	position:relative;
+	width : 100%;
+	min-height : 32px;
+
+	text-align: center;
+	border-bottom : 1px solid #042C54;
+	border-right : 1px solid #042C54;
 }
 
-span.info {
-	width : 65%;
-	color:#042C54;
-	margin-left : 1%;
-}
-
-input.testname {
-	width : inherit;
-	border-top : 0;
-	border-left : 0;
-	border-right : 0;
-	border-bottom : 2px solid #217BD1;
-	color : #042C54;
+div.title {
 	font-family: FireSans;
+	color:black;
+
+	line-height : 32px;
+	vertical-align: middle;
+	text-align: center;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+	cursor:pointer;
 }
-input.testname:focus {
-	outline:none;
-	background : #c4e2ff;
+div.title:hover {
+	background: #C4E2FF;
+	/*color : white;*/
 }
 
+div.button_new {
+	font-family: FireSans;
+	color:black;
+
+	line-height : 32px;
+	vertical-align: middle;
+	text-align: center;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+	cursor:pointer;
+}
+div.button_new:hover{
+	background: lightgreen;
+}
+div.button_compile {
+	font-family: FireSans;
+	color:black;
+
+	line-height : 32px;
+	vertical-align: middle;
+	text-align: center;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+	cursor:pointer;
+}
+div.button_compile:hover{
+	background:#4FA3F2;
+}
 
 textarea.code {
-	margin : 3%;
-	width : 94%;
-	height : 200px;
-	resize : none;
-	border : 1px solid #217BD1;
-}
-textarea.code:focus {
-	outline : none;
+	/*display:none;*/
+	width : 90%;
+	min-height : 256px;
+	margin-bottom: 12px;
+	margin-top:5px;
+    resize: none;
 }
 
-.hidden {
-	display : none;
+button.remove {
+	width:24px;
+	height:24px;
+	text-align: center;
+	line-height: 24px;
+	vertical-align: middle;
+	background:none;
+	border:none;
+
+	position:absolute;
+	top:0;
+	right:0;
+	outline:none;
 }
-.
+button.remove:hover{
+	/*background:#217BD1;*/
+	color:white;
+}

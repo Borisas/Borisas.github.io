@@ -75,6 +75,8 @@ function init () {
 		if ( e.button == 0 && mouseleft ) {
 			var cposx = e.offsetX - mouseleftStart.x;
 			var cposy = e.offsetY - mouseleftStart.y;
+			// renderer.crot.x -= cposx/1000;
+			// renderer.crot.y += cposy/1000;
 			c.rotation.x += cposx/100;
 			c.rotation.y += cposy/100;
 

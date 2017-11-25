@@ -16,7 +16,7 @@ function Renderer3D() {
 
 	this.camera = p( 10,5,0 );
 	this.fov = 90;
-	this.crot = p(d2r(20),0,0);
+	this.crot = p(0,0,0);
 };
 
 Renderer3D.prototype.init = function () {
@@ -40,13 +40,20 @@ Renderer3D.prototype.render = function () {
 	ctx.fillStyle='#ffffff';
 	ctx.fillRect(0,0,this.width,this.height);
 
-	var ccos = Math.cos(this.crot.x);
-	var csin = Math.sin(this.crot.y);
+	var crx = Math.PI-this.crot.x;
+	var cry = Math.PI-this.crot.y;
+	var crz = Math.PI-this.crot.z;
+
+	// console.log(ccos+":"+csin);
 
 	for ( var i in this.objects ) {
 
 		var o = this.objects[i];
-		var op = o.position;
+		var op = p3(o.position.x, o.position.y , o.position.z);
+
+		// op = rot3XVec(op, crx);
+		// op = rot3YVec(op, cry);
+		// op = rot3ZVec(op, crz);
 
 		for ( var j = 0; j < o.lines.length; j++ ) {
 
@@ -55,22 +62,35 @@ Renderer3D.prototype.render = function () {
 
 			var l = o.getLinePosition(j);
 
-			var rs = (l.s.z+op.z-c.z) * Math.sin(d2r(this.fov));
+			var ps = p3 ( l.s.x + op.x - c.x, l.s.y + op.y - c.y , l.s.z + op.z - c.z );
+			var pe = p3 ( l.e.x + op.x - c.x, l.e.y + op.y - c.y , l.e.z + op.z - c.z );
+
+			// ps = rot3XVec(ps,crx);
+			// ps = rot3YVec(ps,cry);
+			// ps = rot3ZVec(ps,crz);
+			//
+			// pe = rot3XVec(pe,crx);
+			// pe = rot3YVec(pe,cry);
+			// pe = rot3ZVec(pe,crz);
+
+
+			var rs = (ps.z) * Math.sin(d2r(this.fov));
 
 			var modxs = this.width/rs,
 				modys = this.height/rs;
 
-			var drawps = p2((l.s.x+op.x-c.x) * modxs + this.width/2,
-			(l.s.y+op.y-c.y) * modys + this.height/2);
+			var drawps = p2((ps.x) * modxs + this.width/2,
+							(ps.y) * modys + this.height/2);
 
 
 
-			var re = (l.e.z+op.z-c.z) * Math.sin(d2r(this.fov));
+			var re = (pe.z) * Math.sin(d2r(this.fov));
 
 			var modxe = this.width/re,
 				modye = this.height/re;
 
-			var drawpe = p2((l.e.x+op.x-c.x) * modxe + this.width/2, (l.e.y+op.y-c.y) * modye+this.height/2);
+			var drawpe = p2((pe.x) * modxe + this.width/2, (pe.y) * modye+this.height/2);
+
 
 			drawLine(this.context, drawps,drawpe);
 		}
@@ -85,12 +105,20 @@ Renderer3D.prototype.render = function () {
 
 				var fp = f.v[k];
 
-				var r = (fp.z+op.z-c.z) * Math.sin(d2r(this.fov));
+				var pos = p3 (fp.x+op.x-c.x,fp.y+op.y-c.y,fp.z+op.z-c.z );
+
+
+				// var pos = rot3XVec ( pos, crx );
+				// 	pos = rot3YVec ( pos, cry );
+				// 	pos = rot3ZVec ( pos, crz );
+
+				var r = (pos.z) * Math.sin(d2r(this.fov));
 
 				var modx = this.width/r,
 				 	mody = this.height/r;
 
-				var pointp = p2 ( (fp.x+op.x-c.x) * modx + this.width/2, (fp.y+op.y-c.y) * mody+this.height/2);
+				var pointp = p2 ( (pos.x) * modx + this.width/2, (pos.y) * mody+this.height/2);
+
 				poly.push(pointp);
 			}
 			fillPoly(this.context, poly,f.c);
@@ -198,14 +226,33 @@ function rot3Z ( v, angle ) {
 	return ret;
 }
 
-function rot3XVec ( vec, cos, sin ) {
+function rot3XVec ( vec, angle ) {
 
-	return p3 (
-		Number(vec.x) * cos - Number ( vec.z ) * sin,
-		Number(vec.y),
-		Number(vec.x) * sin + Number ( vec.z ) * cos
-	);
+	var cos = Math.cos(angle);
+	var sin = Math.sin(angle);
+
+	vec.x = Number(vec.x)*cos - Number(vec.z)*sin;
+	vec.z = Number(vec.x)*sin + Number(vec.z)*cos;
+	return vec;
 }
+function rot3YVec ( vec, angle ) {
+
+	var cos = Math.cos(angle);
+	var sin = Math.sin(angle);
+
+	vec.y = Number(vec.y) * cos - Number ( vec.z ) * sin;
+	vec.z = Number(vec.y) * sin + Number ( vec.z ) * cos;
+	return vec;
+}
+function rot3ZVec ( vec, angle ) {
+
+	var cos = Math.cos(angle);
+	var sin = Math.sin(angle);
+
+	vec.x = Number(vec.x) * cos - Number ( vec.y ) * sin;
+	vec.y = Number(vec.x) * sin + Number ( vec.y ) * cos;
+	return vec;
+};
 
 function p2(x,y){
 	return new (function() { this.x = x; this.y = y; })();

@@ -1,0 +1,41 @@
+
+.display {
+
+  position: absolute;
+  display: block;
+  top:50%;
+  left:50%;
+
+  transform: translate(-50%,-50%);
+  width:60%;
+  height: 80%;
+}
+
+.visual{
+  display:block;
+  /* border:1px solid black; */
+  background: black;
+  height:70%;
+  width:100%;
+}
+
+.input {
+  display : block;
+  height:27%;
+  width:100%;
+  border: 1px solid black;
+}
+.button_holder {
+  display:block;
+  height:3%;
+  width:100%;
+}
+
+button {
+  margin-left:3%;
+  width:29%;  height: 100%;
+  display:inline;
+
+  border : 1px solid black;
+  background : white;
+}

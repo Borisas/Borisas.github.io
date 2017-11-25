@@ -4,81 +4,94 @@ var testBlocks = [];
 const TEST_START 	= "var borisas_perf_test_start_val = performance.now();";
 const TEST_END		= "return performance.now() - borisas_perf_test_start_val;";
 
-window.onload = function () {
-
-	createTestBlock();
-};
+window.onload = function () {addBlock();};
 
 function createTestBlock () {
-	var myid = (testBlocks.length == 0 ? 0 : Number(testBlocks[testBlocks.length-1].id)+1);
-
-	var blockstr = "<span class='button'>"+
-	"<button onclick='hide(\"test"+myid+"\")'>Test"+myid+"</button>"+
-	"</span>"+
-	"<span class='info'><input type='text' class='testname'></input></span>"+
-	"<br/>"+
-	"<textarea class='code' id='test"+myid+"' style='display:none;'></textarea>"+
-	"<br/><button onclick='removeTestBlock("+myid+")'>Remove</button>";
-
-	var block = document.createElement('div');
-	block.className = 'block';
-	block.innerHTML = blockstr;
-	block.id = myid;
-
-	var parent = document.getElementsByClassName('blockParent')[0];
-
-	parent.appendChild(block);
-
-	testBlocks.push(block);
 };
 
-function removeTestBlock ( id ) {
 
-	for ( var i in testBlocks )
 
-		if ( testBlocks[i].id == id ) {
-			testBlocks[i].parentNode.removeChild(testBlocks[i]);
+function toggledisplay (c,i) {
+	var o = (function getobj () {
+		var o = document.getElementsByClassName(c);
+		if ( !o )
+			return null;
+		for ( var j = 0; j < o.length; j++ ) {
+			if ( o[j].id === i ) {
+				return o[j];
+			}
+		}
+		return null;
+	})();
+
+	if ( o ) {
+		var cd = o.style.display;
+		o.style.display = (cd ? "" : "none");
+	}
+};
+
+function addBlock(){
+
+	var id = 0;
+	if( testBlocks.length > 0 )
+		id = testBlocks[testBlocks.length-1].id+1;
+
+	var b = document.createElement('div');
+	b.className = 'block';
+	b.id='bt'+id;
+
+	var title = document.createElement('div');
+	title.className = 'title';
+	title.onclick = function() { toggledisplay("inside", "test"+id); };
+
+	var close = document.createElement('button');
+	close.className = 'remove';
+	close.onclick = function (e) { nobublecall(e, function(){removeBlock(id);})};
+	close.innerHTML="X";
+
+	var txt = document.createElement('textarea');
+	txt.className = 'code';
+	// txt.id = 'test'+id;
+	// txt.style.display = "none";
+
+	var ins = document.createElement('inside');
+	ins.className = 'inside';
+	ins.id = 'test'+id;
+	ins.style.display = 'none';
+
+
+	title.appendChild( document.createTextNode("Test"+id) );
+	title.appendChild(close);
+
+	ins.appendChild(txt);
+
+
+	b.appendChild(title);
+	b.appendChild(ins);
+
+
+	testBlocks.push({ dom : b, id : id});
+
+	document.getElementById('cb0').appendChild(b);
+};
+function removeBlock(id){
+	for ( var i = 0; i < testBlocks.length; i++ ){
+		if (testBlocks[i].id === id ) {
+			testBlocks[i].dom.parentNode.removeChild(testBlocks[i].dom);
 			testBlocks.splice(i,1);
 			return;
 		}
-};
-
-function runTests () {
-
-	if ( testBlocks.length == 0 ) {
-		return;
-	}
-
-	var setup = document.getElementById('setupblock').value;
-	var boilerplate = document.getElementById('boilerplate').value;
-
-	var testFunctions = [];
-
-	for ( var i = 0; i < testBlocks.length; i ++ ) {
-		testFunctions.push(getTest(i, setup, boilerplate));
 	}
 };
 
+function runTests() {
 
-function getTest ( id , s , b ) {
-
-	var test = document.getElementById('test'+id).value;
-
-	return new Function (
-		s +
-		TEST_START +
-		b +
-		test +
-		TEST_END
-	);
 };
 
-function hide ( id ) {
-
-	var el = document.getElementById(id);
-
-	if ( el.style.display != "none" )
-		el.style.display = "none";
-	else
-		el.style.display = "";
+function nobuble(e){
+	e.stopPropagation();
+};
+function nobublecall(e,call){
+	e.stopPropagation();
+	call();
 };
