@@ -16,15 +16,30 @@
   /* border:1px solid black; */
   background: black;
   height:70%;
-  width:100%;
+  width:90%;
+  margin-left:auto;
+  margin-right:auto;
 }
 
-.input {
-  display : block;
-  height:27%;
-  width:100%;
-  border: 1px solid black;
+.coding {
+  margin-top:2px;
+  display : 'block';
 }
+.input {
+  display : inline;
+  height:27%;
+  width:49%;
+  border: 1px solid black;
+  resize: none;
+}
+.demo {
+  display :inline-block;
+  height:27%;
+  width:49%;
+  border:1px solid black;
+  overflow:auto;
+}
+
 .button_holder {
   display:block;
   height:3%;

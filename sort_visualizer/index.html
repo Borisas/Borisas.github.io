@@ -8,11 +8,21 @@
 
   <body>
     <div class='display'>
-      <canvas id='visual' class='visual'></canvas>
-      <textarea id='code' class='input'></textarea>
+      <canvas id='visual' class='visual' width=800 height=800></canvas>
+      <div class='coding'>
+        <textarea id='code' class='input'></textarea>
+        <div class='demo'>
+          <span id='demodisp'>
+            <b>Variables available to you:</b><br/>
+            <b><i>- d : Array&lt;Number&gt;</i></b><br/>
+            <b><i>- sort_i : Number, but you can do whatever.</i></b><br/>
+            <b><i>- sort_j : Number, but you can do whatever.</i></b><br/>
+          <br/></span>
+      </div>
+      </div>
       <div class='button_holder'>
         <button onclick='LoadNewScript()'>Save & Run</button>
-        <button onclick='ShuffleData()'>Rerun</button>
+        <button onclick='Restart()'>Rerun</button>
         <button onclick='Stop()'>Stop</button>
       </div>
     </div>

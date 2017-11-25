@@ -11,6 +11,12 @@ var sortf = function(){};
 var data = [];
 var ow = 0;
 
+var speed = 0.05;
+
+var data_size = 64;
+
+var lasttm = null;
+
 var u = {
   swap : function(d,i,j){
     var a = Number(d[i]);
@@ -30,20 +36,47 @@ window.onload = function(){
   canvas = document.getElementById('visual');
   context = canvas.getContext('2d');
 
+  
+
 
   sw = function(){ return canvas.width; };
   sh = function(){ return canvas.height; };
+
+  demo = document.getElementById('demodisp');
+
+  demo.innerHTML += '<b>Here\'s a Bubble Sort example:</b><br/><i>Just copy and paste it to the left, then click \'Save & Run\'</i><br/><br/>';
+
+  var c = ''+
+  'if ( i == 0 )\n'+
+  '\ti = 1;\n'+
+  'if ( d[i-1] > d[i] ) {\n'+
+  '\tvar t = d[i-1];\n'+
+  '\td[i-1] = d[i];\n'+
+  '\td[i] = t;\n'+
+  '\tj = 1;\n'+
+  '}\n'+
+  'i++;\n'+
+  'if ( i >= d.length ) {\n'+
+  '\ti = 1;\n'+
+  '\tif ( j == 0 ) {\n'+
+  '\t\tStop();\n'+
+  '\t}\n'+
+  '\tj = 0;\n'+
+  '}\n';
+
+  c = c.replace(/\n/g, '<br/>').replace(/\t/g, '&nbsp;');
+
+  demo.innerHTML += c;
 
   ResetData();
   ShuffleData();
   Start();
 }
 
+
 function ResetData() {
 
   data = [];
-
-  var data_size = 64;
 
   for ( var i = 0; i < data_size; i++ ) {
     data.push(i * 1/data_size);
@@ -75,6 +108,7 @@ function SortData() {
 function Start() {
 
   Update();
+  call();
 }
 
 function Update() {
@@ -88,16 +122,12 @@ function Update() {
 
     var fs = context.fillStyle;
     
-    context.fillStyle = 'rgba(255,255,255,'+data[i]+')';
+    var  val = data[i] * 360;
+    val = Math.floor(val);
+
+    context.fillStyle = 'hsl('+val+',100%,50%)';
     context.fillRect(i*ow, 0, ow, sh());
     context.fillStyle = fs;
-  }
-  try {
-    call(data, sort_i, sort_j);
-  }
-  catch(e) {
-    console.error("BAD SCRIPT");
-    console.error(e);
   }
 }
 
@@ -111,7 +141,21 @@ function call(d,i,j) {
   if ( isDone )
     return;
 
-  sortSingleFrame(d,i,j);
+  if ( lasttm ) {
+    clearTimeout(lasttm);
+  }
+
+  lasttm = setTimeout(function(){ 
+    try {
+    sortSingleFrame(data,sort_i, sort_j);
+    }
+    catch(e){
+      console.error("BAD FUNCTION.");
+      console.error(e);
+    }
+    return;
+  }, 
+    speed);
 }
 
 function sortSingleFrame(d,i,j) {
@@ -136,12 +180,18 @@ function sortSingleFrame(d,i,j) {
 
   sort_i = i;
   sort_j = j;
+
+  call();
 }
 
 function LoadNewScript() {
 
   var scriptdom = document.getElementById('code');
   var script = scriptdom.value;
+
+  var h = '(function s(d,i,j){';
+  script = h + script;
+  script += 'sort_i = i; sort_j = j; call();})(arguments[0],arguments[1],arguments[2]);';
 
   var newfun = null;
   try {
@@ -156,7 +206,12 @@ function LoadNewScript() {
 
   sortSingleFrame = newfun;
 
+  Restart();
+}
+
+function Restart(){
   ShuffleData();
+  call();
 }
 
 function Stop() {
