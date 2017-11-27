@@ -73,7 +73,7 @@ var nn = {
 
   dc : 0,
 
-  learning_rate : 0.1,
+  learning_rate : 2.0,
 
   redraw : true,
 
@@ -307,6 +307,7 @@ var nn = {
           sum += next[i].weights[j] * last[j].val;
         }
 
+        next[i].net = sum+next[i].bias;
         next[i].val = u.sigmoid(sum + next[i].bias);
       }
       t++;
@@ -338,58 +339,73 @@ var nn = {
     this.passInput(inp);
 
     var sl_i = this.getLayerCount()-1;
-    var sl = this.getLayer(sl_i);
+
     var ll = [];
 
-    var error = [];
-    var edelta = [];
+    for ( sl_i; sl_i >= 0; sl_i-- ) {
 
-    for ( sl_i; sl_i > 0; sl_i -- ) {
-      sl = this.getLayer(sl_i);
+      var sl = this.getLayer(sl_i);
 
-      var ea = [];
-      var ead = [];
-      if ( sl_i === this.getLayerCount() - 1 ) {
-        for ( var i = 0; i < out.length; i++ ) {
+      var errors = [];
 
-          var vm = sl[i].val;
-          var ve = out[i];
-          var e = ve-vm;
+      if ( sl_i < this.getLayerCount() -1 ) {
 
-          ea.push(e);
-          ead.push(e * u.sigmoid_deriv(vm));
+        for ( var j = 0; j < sl.length; j++ ) {
+          var error = 0.0;
+
+          for ( var k = 0; k < ll.length; k++ ) {
+            var neur = ll[k];
+            error += neur.weights[j] * neur.delta;
+          }
+          errors.push(error);
         }
       }
       else {
 
-        var weights = this.getLayerWeights(ll);
-        var w_t = u.t_2d(weights);
-        // console.log(w_t);
-        console.log(w_t);
+        for ( var j = 0; j < sl.length; j++ ) {
 
-        for ( var i = 0; i < ll.length; i++ ) {
-
-          var w = u.sum_a(weights[i]);
-          console.log(w);
-          var d = error[0][i];
-          var e = w*d;
-
-          ea.push(e);
-          ead.push(e * u.sigmoid_deriv(e)); 
+          var node = sl[j];
+          errors.push(out[j] - node.val);
         }
       }
+
+      for ( var j = 0; j < sl.length; j++ ) {
+        var node = sl[j];
+        node.delta = errors[j] * u.sigmoid_deriv(node.val);
+      }
       ll = sl;
-      error.splice(0,0,ea);
-      edelta.splice(0,0,ead);
     }
 
-    console.log(error);
-    console.log(edelta);
+    for ( var i = 0; i < this.getLayerCount(); i++ ) {
+      var t_inp = inp;
+      if ( i !== 0 ) {
+        t_inp = this.getLayerValues(this.getLayer(i-1));
+      }
+
+      var l = this.getLayer(i);
+      for(var j = 0; j < l.length; j++ ) {
+        
+        var neur = l[j];
+
+        for ( var k = 0; k < t_inp.length; k++ ) {
+          var t = neur.weights[k];
+          neur.weights[k] += this.learning_rate * neur.delta * t_inp[k];
+          console.log(neur.weights[k] - t);
+        }
+        neur.weights[t_inp.length-1] += this.learning_rate * neur.delta;
+      }
+
+    }
+
+    this.redraw = true;
   }
 };
 
 function Node() {
   this.val = 0;
+  this.net = 0;
+  this.error = 0;
+  this.delta = 0;
   this.weights = [];
   this.bias = 0;
 
