@@ -107,7 +107,6 @@ sjs.vs = function() {
 }
 
 sjs.load = function(farr) {
-  console.log(typeof farr);
   if ( farr.constructor !== Array ) {
     throw("Files to load isn't an array.");
     return;
@@ -127,7 +126,6 @@ sjs.__la = function(i) {
 
   if ( i === sjs.files_to_load.length-1 ) {
     sjs.__lf(sjs.files_to_load[i], sjs.onload);
-    console.log("HUH");
   }
   else {
     sjs.__lf(sjs.files_to_load[i], function(){ sjs.__la(i+1); });

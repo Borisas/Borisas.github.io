@@ -30,8 +30,6 @@ sjs.node = function() {
     this.pos.x = x;
     this.pos.y = y;
 
-    console.log(this.pos);
-
     this.__dirty = true;
   }
   this.setPositionX = function(x) {
