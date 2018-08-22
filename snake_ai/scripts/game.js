@@ -17,6 +17,7 @@ var p = function(x,y) {
 
 var dir = { up : 0, right : 1, down : 2, left : 3 };
 
+
 var game = function() {
 
 	this.snake = [];
@@ -27,7 +28,7 @@ var game = function() {
 	this.foodPositions = [];
 	this.lastFood = 0;
 
-	this.interval = 50;
+	// this.interval = 50;
 	this.timer = 0;
 
 	this.score = 0;
@@ -89,13 +90,13 @@ var game = function() {
 		this.timer += DELTA;
 		this.spawner();
 
-		if ( this.timer >= this.interval ) {
+		if ( this.timer >= interval ) {
 			this.handleInput(this.humanInput);
 			this.humanInput = 0;
 			this.moveSnake();
 			this.checkCollision();
 
-			this.timer -= this.interval;
+			this.timer -= interval;
 		}
 
 		this.draw();
@@ -114,9 +115,9 @@ var game = function() {
 			var spaceRight = this.getSpace(1);
 			var spaceLeft = this.getSpace(3);
 
-			var distToFoodForward = this.getDistToFood(0);
-			var distToFoodRight = this.getDistToFood(1);
-			var distToFoodLeft = this.getDistToFood(3);
+			var distToFoodForward = 1-this.getDistToFood(0);
+			var distToFoodRight = 1-this.getDistToFood(1);
+			var distToFoodLeft = 1-this.getDistToFood(3);
 
 			this.player.makeDecision([
 				spaceForward,
@@ -161,7 +162,7 @@ var game = function() {
 		var newdir = this.direction + to;
 
 		if ( newdir > 3 ) newdir -= 4;
-		if ( newdir < 0 ) newdir += 3;
+		if ( newdir < 0 ) newdir += 4;
 
 		return newdir;
 	};
@@ -237,7 +238,7 @@ var game = function() {
 		this.timer += DELTA;
 		this.spawnerReplay();
 
-		if ( this.timer >= this.interval ) {
+		if ( this.timer >= interval ) {
 
 			var d = this.player.getRecordedDecision();
 			if ( d == -1 ) {
@@ -249,11 +250,12 @@ var game = function() {
 			this.moveSnake();
 			this.checkCollision();
 
-			this.timer -= this.interval;
+			this.timer -= interval;
 		}
 
 		this.draw();
 		this.drawUI();
+		this.player.drawNetwork();
 	};
 
 	this.moveSnake = function() {
@@ -423,9 +425,22 @@ var game = function() {
 
 		if ( this.snake.length > 0 ) {
 
-			fill(0,180,255);
+			// fill(0,180,255);
+			var r = 0;
+			var g = 180;
+			var b = 255;
+
+			var minR = 0;
+			var minG = 120;
+			var minB = 180;
 			
 			for ( var i = 0; i < this.snake.length; i++ ) {
+
+				var nr = minR + (r - minR) * ((this.snake.length-i)/this.snake.length);
+				var ng = minG + (g - minG) * ((this.snake.length-i)/this.snake.length);
+				var nb = minB + (b - minB) * ((this.snake.length-i)/this.snake.length);
+
+				fill(nr,ng,nb);
 
 				var x = this.snake[i].x;
 				var y = this.snake[i].y;

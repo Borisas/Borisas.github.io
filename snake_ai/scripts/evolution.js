@@ -140,6 +140,8 @@ var evolution = function() {
 		this.fittestMember = p.player;
 		this.fittestMemberGame = p;
 
+		if ( Math.floor(highestFitness) > bestScore ) bestScore = Math.floor(highestFitness);
+
 		this.simulationDone = true;
 		this.fittestMemberGame.prepareSimulation();
 	}

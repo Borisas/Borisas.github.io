@@ -206,3 +206,8 @@ function randomInteger(from, to) {
 function randomFloat(from, to) {
 	return Math.random() * (to - from) + from;
 }
+
+function sigmoid(x) {
+
+	return ( Math.pow(Math.E, x) / ( Math.pow(Math.E,x) + 1));
+}

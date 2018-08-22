@@ -6,6 +6,16 @@ var node = function() {
 
 };
 
+
+
+var activation = function() {
+
+	this.inputLayer = [];
+	this.hiddenLayer = [];
+	this.outputLayer = [];
+
+};
+
 var ai = function() {
 
 	this.inputLayer = [];
@@ -13,9 +23,10 @@ var ai = function() {
 	this.outputLayer = [];
 
 	this.inputSize = 6;
-	this.hiddenSize = 12;
+	this.hiddenSize = 8;
 	this.outputSize = 3;
 
+	this.activations = [];
 	this.decisions = [];
 	this.lastDecision = 0;
 
@@ -133,18 +144,26 @@ var ai = function() {
 	this.recordDecision = function() {
 
 		this.decisions.push(this.getDecision());
+		this.recordActivation();
 	}
 
-	this.getRecordedDecision = function() {
+	this.recordActivation = function() {
+		var at = new activation();
 
-		if ( this.lastDecision > this.decisions.length ) return -1;
+		for ( var i = 0; i < this.inputSize; i++ ) {
+			at.inputLayer.push(this.inputLayer[i].value);
+		}
 
-		var d = this.decisions[this.lastDecision];
+		for ( var i = 0; i < this.hiddenSize; i++ ) {
+			at.hiddenLayer.push(this.hiddenLayer[i].value);
+		}
 
-		this.lastDecision++;
+		for ( var i = 0; i < this.outputSize; i++ ) {
+			at.outputLayer.push(this.outputLayer[i].value);
+		}
 
-		return d;
-	}
+		this.activations.push(at);
+	};
 
 	this.resetDecision = function() {
 
@@ -162,12 +181,187 @@ var ai = function() {
 
 			this.outputLayer[i].value = 0;
 		}
+
 	}
+
+	this.getRecordedDecision = function() {
+
+		if ( this.lastDecision > this.decisions.length ) return -1;
+
+		var d = this.decisions[this.lastDecision];
+
+
+		if ( this.activations.length > this.lastDecision ) {
+			var at = this.activations[this.lastDecision];
+
+
+			for ( var i = 0; i < this.inputSize; i++ ){
+				
+				this.inputLayer[i].value = at.inputLayer[i];
+			}
+			for ( var i = 0; i < this.hiddenSize; i++ ){
+				
+				this.hiddenLayer[i].value = at.hiddenLayer[i];
+			}
+			for ( var i = 0; i < this.outputSize; i++ ){
+				
+				this.outputLayer[i].value = at.outputLayer[i];
+			}
+		}
+
+		this.lastDecision++
+
+		return d;
+	}
+
 	this.resetRecords = function() {
 
+
 		this.decisions = [];
+		this.activations = [];
 	}
 
+	this.drawNetwork = function() {
+
+		lineWidth(3);
+
+		var x = 540;
+		var y = 350;
+		var spaceX = 100;
+
+		var rh = ( this.hiddenSize - this.inputSize ) * 0.5;
+		var ro = ( this.outputSize - this.inputSize ) * 0.5;
+
+		var highestWeight = 0;
+
+		for ( var i = 0; i < this.inputSize; i++ ) {
+
+			for ( var j = 0; j < this.hiddenSize; j++ ) {
+
+				var w = Math.abs(this.inputLayer[i].weights[j]);
+				if ( w > highestWeight ) {
+					highestWeight = w;
+				}
+			}
+		}
+		for ( var i = 0; i < this.hiddenSize; i++ ) {
+
+			for ( var j = 0; j < this.outputSize; j++ ) {
+
+				var w = Math.abs(this.hiddenLayer[i].weights[j]);
+				if ( w > highestWeight ) {
+					highestWeight = w;
+				}
+			}
+		}
+
+
+		for ( var i = 0; i < this.inputSize; i++ ) {
+
+			var p0 = new p(x, y + 16 * i);
+
+			for ( var j = 0; j < this.hiddenSize; j++ ) {
+
+				var p1 = new p(x+spaceX,y+16*(j-rh));
+
+				var weight = this.inputLayer[i].weights[j];
+				var color = weight;
+
+				if (Math.abs(color) >= highestWeight * 0.9 ) {
+					color = 1;
+				}
+				else {
+					color = Math.abs(color) / highestWeight;
+				}
+
+				if ( Math.abs(weight) > highestWeight * 0.4 ){
+
+					if ( weight > 0 )
+						stroke(255*color,0,0);
+					else
+						stroke(0,255*color,0);
+
+					line(p0.x,p0.y,p1.x,p1.y);
+				}
+			}
+		}
+
+		for ( var i = 0; i < this.hiddenSize; i++ ) {
+
+			var p0 = new p(x+spaceX,y+16*(i-rh));
+
+			for ( var j = 0; j < this.outputSize; j++ ) {
+
+				var p1 = new p(x+spaceX*2, y + 16 * (j-ro));
+
+
+				var weight = this.hiddenLayer[i].weights[j];
+				var color = weight;
+
+				if (Math.abs(color) >= highestWeight * 0.9 ) {
+					color = 1;
+				}
+				else {
+					color = Math.abs(color) / highestWeight;
+				}
+
+				if ( Math.abs(weight) > highestWeight * 0.4 ){
+
+					if ( weight > 0 )
+						stroke(255*color,0,0);
+					else
+						stroke(0,255*color,0);
+
+					line(p0.x,p0.y,p1.x,p1.y);
+				}
+			}
+		}
+
+		lineWidth(1);
+
+		stroke(255,255,255);
+
+		for ( var i = 0; i < this.inputSize; i++ ) {
+
+			var v = this.inputLayer[i].value;
+
+			var inv = 1-v;
+
+			fill(255 * inv, 255 * v, 0);
+
+			ellipse(x, y + 16 * i, 4);
+		}
+
+		for ( var i = 0; i < this.hiddenSize; i++ ) {
+
+			var v = this.hiddenLayer[i].value;
+
+			var f = sigmoid(v);
+			var inv = 1 - f;
+
+			fill(255 * inv, 255 * v, 0);
+
+
+			ellipse(x+spaceX,y+16*(i-rh), 4);
+		}
+
+		for ( var i = 0; i < this.outputSize; i++ ) {
+
+			var v = this.outputLayer[i].value;
+
+			var f = sigmoid(v);
+			var inv = 1 - f;
+
+			fill(255 * inv, 255 * v, 0);
+
+
+			ellipse(x+spaceX*2, y + 16 * (i-ro), 4);
+		}
+
+
+		fill(100,255,100);
+		text(x + spaceX, y - 50, "THE BRAIN");
+	};
 
 	this.init();
 };
