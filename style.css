@@ -1,0 +1,121 @@
+body {
+    color : #222222;
+    font-family: 'Roboto', sans-serif;
+}
+
+div.main {
+    width:100%;
+    height:100%;
+    position: absolute;
+    top:0;
+    left:0;
+    display:grid;
+    grid-template-areas: 
+        '. header header .'
+        '. content menu .'
+        '. content menu .';
+    grid-template-columns: 10% auto 20% 10%;
+    grid-template-rows: 10% auto 10%;
+    grid-gap: 10px;
+}
+
+div.header {
+    grid-area: header;
+    display: flex;
+    justify-content: left;
+    align-items: flex-end;
+    font-size: 32pt;
+    padding:5px;
+    user-select: none;
+}
+
+div.content {
+    position:relative;
+    grid-area:content;
+    border-top: 2px solid #222222;
+    max-height:100%;
+    display:block;
+}
+
+div.content-item {
+    min-height: 10em;
+    width : 90%;
+    display : block;
+    margin-top : 2em;
+    margin-left:auto;
+    margin-right:auto;
+    border-bottom: 1px inset #222222;
+}
+
+div.content-item > .content-item-header {
+    height:2em;
+    width:100%;
+    font-size:150%;
+}
+
+div.content-item > .content-item-info {
+    min-height:6em;
+    width:100%;
+    padding:0.5em;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;  
+}
+
+div.content-item > .content-item-footer {
+    height:2em;
+    width:100%;
+    position:relative;
+    bottom:0;
+}
+
+div.menu {
+    grid-area:menu;
+}
+div.menu > .menu-items {
+    position:sticky;
+    top : 4em;
+    border-left:1px solid #222222;
+}
+
+div.menu-items > .item {
+    margin-top:0.5em;
+    padding : 0.2em;
+    padding-left:1em;
+    cursor:pointer;
+    user-select: none;
+    display:block;
+    width:100%;
+    color : #222222;
+}
+div.menu-items > .item:hover {
+    transition-duration: 0.3s;
+    background : #FAFAFA;
+}
+
+
+a {
+    text-decoration: none;
+}
+a:link {
+    color: blue;
+}
+a:visited {
+    color: blue;
+}
+a:hover {
+    color: rgb(104, 104, 255);
+}
+a:active {
+    color: blue;
+}
+
+a.menu-item {
+    color: #222222;
+}
+
+iframe.full {
+    width : 100%;
+    height : 100%;
+    border:none;
+}
