@@ -24,11 +24,9 @@ Renderer3D.prototype.init = function () {
 	this.dom.width = this.width;
 	this.dom.height = this.height;
 
-	this.dom.style.top = '50%';
-	this.dom.style.left = '50%';
-	this.dom.style.position='absolute';
-	this.dom.style.transform = "translate(-50%,-50%)";
 	this.dom.style.border = "1px solid black";
+	this.dom.style.margin = "auto";
+	this.dom.style.display = "block";
 	// this._fillPlane();
 
 	this.context = this.dom.getContext('2d');
