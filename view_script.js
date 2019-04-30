@@ -9,6 +9,8 @@ var link = "";
 var name = "";
 var githubLink = "";
 
+var iframe = null;
+
 window.onload = () => {
 
     content = document.getElementById('content');
@@ -74,13 +76,31 @@ function loadProj(projectName) {
     header.innerHTML = "/dev/NT/"+name;
     github.href = githubLink;
 
+
 }
 
+function resizeIFrameToFitContent() {
+
+    console.log(iframe);
+
+    iframe.width  = iframe.contentWindow.document.body.scrollWidth;
+    iframe.height = iframe.contentWindow.document.body.scrollHeight;
+}
 
 function createIframe(src) {
-    console.log("Loading link: " + src);
+    
     var frame = document.createElement('iframe');
     frame.src = src;
+    frame.id = 'iframe';
     frame.className = 'full';
+    frame.width = content.offsetWidth;
+    frame.height = content.offsetHeight;
+    iframe = frame;
+
+    frame.onload = () => {
+        
+        resizeIFrameToFitContent();
+    }
+
     return frame;
 }

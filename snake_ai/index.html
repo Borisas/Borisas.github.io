@@ -3,7 +3,7 @@
 
 <head>
 	<link rel="stylesheet" href="style.css">
-	<script src='scripts/iwbprocessing.js'></script>
+	<script src='../lib/iwbprocessing.js'></script>
 	<script src='scripts/ai.js'></script>
 	<script src='scripts/evolution.js'></script>
 	<script src='scripts/game.js'></script>
@@ -13,8 +13,8 @@
 
 <body>
 	<div style="display:block; margin:auto;">
-		SPEED: <input type="range" min="20" max="5000" value="50" class="slider" id="speedrange">
-		<input id='speedinp' type="number" value="50" min="20">
+		SPEED: <input type="range" min=0 max=100 class="slider" id="speedrange">
+		<input id='speedinp' type="number" min=0 max=100>
 		<canvas id='main' class='main' width=640 height=480></canvas>
 	</div>
 </body>

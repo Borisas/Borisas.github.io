@@ -19,7 +19,7 @@ div.main {
     grid-gap: 10px;
 
 }
-@media handheld and (orientation: portrait), only screen and (max-width: 600px){ 
+@media (max-width: 1024px) {
     
     div.main {
         width:100%;
@@ -40,14 +40,6 @@ div.main {
 
     
     div.menu-items > .item {
-        /* margin-top:0.5em;
-        padding : 0.2em;
-        padding-left:1em;
-        cursor:pointer;
-        user-select: none;
-        display:block;
-        width:100%;
-        color : #222222; */
         font-size:150%;
     }
 }

@@ -21,6 +21,13 @@ function Renderer3D() {
 
 Renderer3D.prototype.init = function () {
 	this.dom = document.createElement('canvas');
+
+	var tw = document.body.offsetWidth * 0.75;
+	var th = tw * 0.75;
+
+	this.width = Math.min(this.width, tw);
+	this.height = Math.min(this.height, th);
+
 	this.dom.width = this.width;
 	this.dom.height = this.height;
 

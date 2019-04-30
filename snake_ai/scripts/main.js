@@ -6,28 +6,40 @@ var interval = 50;
 
 function setup() {
 	e = new evolution();
-	init(768,512);
+	init(768,512,true);
 	backgroundStyle(55,55,55);
-
-	console.log("INIT");
 
 
 	{//setup slider
 
 		var input = document.getElementById('speedinp');
 		var slider = document.getElementById("speedrange");
-		slider.value = 50;
+
+		// 1 = 20
+		// 0.01 = 1000
+
+		var v = Math.floor(100 * 950/980);
+
+		slider.value = v;
+		input.value = v;
 		slider.oninput = function() {
-			interval = slider.value;
+
+			var uv = slider.value / 100;
+
+			var value = 20 + (1-uv) * (1000-20);
+
+			interval = value;
 			input.value = slider.value;
 		};
 		input.oninput = function() {
 
-			// var val = 0;
-			interval = input.value;
-			slider.value = interval;
-		}
+			var uv = input.value / 100;
 
+			var value = 20 + (1-uv) * (1000-20);
+
+			interval = value;
+			slider.value = input.value;
+		}
 	}
 
 }

@@ -78,8 +78,6 @@ function init () {
 		if ( e.button == 0 && mouseleft ) {
 			var cposx = e.offsetX - mouseleftStart.x;
 			var cposy = e.offsetY - mouseleftStart.y;
-			// renderer.crot.x -= cposx/1000;
-			// renderer.crot.y += cposy/1000;
 			c.rotation.x += cposx/100;
 			c.rotation.y += cposy/100;
 
@@ -103,66 +101,36 @@ function init () {
 		e.preventDefault();
 		e = e.touches[0];
 
-		if ( e.button == 0 ) {
-			//LEFT
-			mouseleftStart.x = e.clientX;
-			mouseleftStart.y = e.clientY;
-			mouseleft = true;
-		}
-		else if ( e.button == 2 ) {
-			//RIGHT
-			mouserightStart.x = e.clientX;
-			mouserightStart.y = e.clientY;
-			mouseright = true;
-		}
+
+		mouseleftStart.x = e.clientX;
+		mouseleftStart.y = e.clientY;
+		mouseleft = true;
 	});
 
 	renderer.dom.addEventListener('touchmove', function (e) {
+
 		e.preventDefault();
 		e = e.touches[0];
-
-		if ( e.button == 0 && mouseleft ) {
+		if ( mouseleft ) {
 			var cposx = e.clientX - mouseleftStart.x;
 			var cposy = e.clientY - mouseleftStart.y;
-			// renderer.crot.x -= cposx/1000;
-			// renderer.crot.y += cposy/1000;
 			c.rotation.x += cposx/100;
 			c.rotation.y += cposy/100;
 
 			mouseleftStart.x = e.clientX;
 			mouseleftStart.y = e.clientY;
 		}
-		else if ( e.button == 2 && mouseright ) {
-			var cposx = e.clientX - mouserightStart.x;
-			var cposy = e.clientY - mouserightStart.y;
-			renderer.camera.x += cposx/20;
-			renderer.camera.y += cposy/20;
-
-			mouserightStart.x = e.clientX;
-			mouserightStart.y = e.clientY;
-
-		}
 
 	});
 
 	
 	renderer.dom.addEventListener('touchend', function (e) {
-
-		console.log(e);
 		e.preventDefault();
 
-		if ( e.button == 0 ) {
 			//LEFT
-			mouseleftStart.x = 0;
-			mouseleftStart.y = 0;
-			mouseleft = false;
-		}
-		else if ( e.button == 2 ) {
-			//RIGHT
-			mouserightStart.x = 0;
-			mouserightStart.y = 0;
-			mouseright = false;
-		}
+		mouseleftStart.x = 0;
+		mouseleftStart.y = 0;
+		mouseleft = false;
 	});
 
 	frame();
