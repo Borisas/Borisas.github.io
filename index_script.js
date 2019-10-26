@@ -41,7 +41,17 @@ const contents = [
             I wanted to figure out a way to draw something in 3d on my own without actually using any 3d renderer.
             So this entire thing is just running on basic HTML5 Canvas drawing functionality (lines and rectangles).
             Left Mouse Button to rotate.`, 
-        "view.html?proj=canvas3d")
+        "view.html?proj=canvas3d"),
+
+    new contentsData(
+        "MVP 3D",
+        `I made this while waiting for some esports games to start.
+        My motivation was trying to understand MVP matrixes better. Before starting this they were a sort of Black magic to me
+        \"You mean i just put numbers here and suddenly it's flat?\" But as it turns out it's just a bunch of fancy matrix math.
+        It was fun though. Also has a script part for animation, just so I could play around and preview it better.
+        `,
+        "view.html?proj=mvp3d"
+    )
 
 ];
 

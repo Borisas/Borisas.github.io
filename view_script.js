@@ -48,6 +48,11 @@ function initData(projName) {
         name = "sort_visualizer";
         githubLink = "https://github.com/Borisas/Borisas.github.io/tree/master/sort_visualizer";
     }
+    else if ( projName === "mvp3d" ) {
+        link = "mvp3d/index.html";
+        name = "mvp3d";
+        githubLink = "https://github.com/Borisas/Borisas.github.io/tree/master/mvp3d";
+    }
     else {
         errored = true;
     }
