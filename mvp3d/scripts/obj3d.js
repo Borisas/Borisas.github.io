@@ -24,6 +24,10 @@ var obj3d = function() {
         dirty= true;
     }
 
+    this.getTriangleCount = function() {
+        return this.triangles.length;
+    }
+
     this.setupCube = function() {
 
         
@@ -52,6 +56,19 @@ var obj3d = function() {
             [0,3,7],
             [0,7,4]
         ]
+    }
+
+    this.reset = function() {
+        this.triangles = [];
+        this.vertices = [];
+    }
+
+    this.addVertex = function(v) {
+        this.vertices.push(v);
+    }
+
+    this.addTriangle = function (t0,t1,t2) {
+        this.triangles.push( [t0,t1,t2] );
     }
 
     this.getIdentity = function() {

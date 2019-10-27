@@ -2,6 +2,8 @@
 var o3d = null;
 var cam = null;
 
+var rend= null;
+
 function tp(p) {
 
     var x = p[0] / p[3];
@@ -13,7 +15,10 @@ function tp(p) {
     }
 }
 
+
 function setup() {
+
+
 	init(768,512,true);
     backgroundStyle(55,55,55);
     
@@ -43,51 +48,67 @@ function setup() {
     },cam.getView(), cam.getProjection());
 
     initValues();
+    ml =  millis() % slowdown;;
+
+    rend = new Renderer();
+    rend.attach();
+    rend.setCamera(cam);
 }
+var ml;
+var slowdown = 5000;
 
 function draw() {
-    clear();
+    // if ( millis() % slowdown < ml ) {
     
-    let a = 0;
-    stroke(255,255,0);
-    o3d.forEachTriangle((p0,p1,p2)=>{
+        clear();
 
-        var at0 = tp(p0);
-        var at1 = tp(p1);
-        var at2 = tp(p2);
+        rend.extract();
 
-        line(at0.x,at0.y,at1.x,at1.y);
-        line(at1.x,at1.y,at2.x,at2.y);
-        line(at2.x,at2.y,at0.x,at0.y);
+        let i  =0;
+        let step = 255 / o3d.getTriangleCount();
 
-        // var r = a * 10 > 255 ? 255 : a * 10;
-        // var g =  a * 3 > 255 ? 255 : a * 3;
-        // var b = a * 6 > 255 ? 255 : a * 6;
+        o3d.forEachTriangle((p0,p1,p2)=>{
 
-        // fill(r,g,b);
-        // fillPoly([at0,at1,at2]);
-        a++;
+            
+            var p40 = p4.m4(p0);
+            var p41 = p4.m4(p1);
+            var p42 = p4.m4(p2);
 
-    }, cam.getView(), cam.getProjection());
+            // rend.drawLine3D(p40,p41);
+            // rend.drawLine3D(p41,p42);
+            // rend.drawLine3D(p42,p40);
 
-    stroke(255,255,255);
-    let k = 0;
-    textSize(24);
-    o3d.forEachVertexModel((p)=>{
+            // if ( i%2 == 0) {
+                c = step * i > 255 ? 255 : step * i;
+                rend.drawTriangle3D(p40,p41,p42,c,c,c);
+            // }
 
+            i++;
 
+        }, cam.getView(), cam.getProjection());
+
+        rend.blit();
+
+        // let a = 0;
+        // stroke(255,255,0);
+
+        // stroke(255,255,255);
+        // let k = 0;
+        // textSize(24);
+        // o3d.forEachVertexModel((p)=>{
+            
+        //     var at = tp(p);
+        //     rect(at.x-2,at.y-2,4,4);
+        //     k++;
+        // },cam.getView(), cam.getProjection());
+
+        // stroke(255,255,0);
+
+        o3d.test();
         
-        var at = tp(p);
-        rect(at.x-2,at.y-2,4,4);
-        k++;
-// 
-    },cam.getView(), cam.getProjection());
-
-    stroke(255,255,0);
-
-    o3d.test();
-    
-    initValues();
+        initValues();
+    // }
+    // ml = millis() % slowdown;
 }
 
 function initValues() {
@@ -259,4 +280,89 @@ function update_animation() {
     }
     catch {}
 
+}
+
+
+function objdrop(ev) {
+    
+  // Prevent default behavior (Prevent file from being opened)
+  ev.preventDefault();
+
+  if (ev.dataTransfer.items) {
+      
+    var file = ev.dataTransfer.items[0].getAsFile();
+
+    if ( file.name.includes(".obj") ) {
+
+        console.log(file);
+        
+        let reader = new FileReader();
+        reader.onload = function (event) {
+            //holder.style.background = 'url(' + event.target.result + ') no-repeat center';
+            console.log("ON LOAD");
+            console.log(event);
+            let file = event.target.result;
+
+            var lines = file.split('\n');
+            
+            try {
+                function getTriangle(t) {
+                    if ( t.includes("/") ) {
+                        return Number(t.split("/")[0]);
+                    }
+                    return Number(t);
+                }
+                o3d.reset();
+                for ( let i = 0 ;i < lines.length; i++ ) {
+
+                    var l = lines[i];
+                    var split = l.split(" ");
+
+                    if ( split[0] === "v") {
+                        var vert = new p3(Number(split[1]),Number(split[2]),Number(split[3]));
+                        o3d.addVertex(vert);
+                    }
+                    else if ( split[0] === "f" ) {
+
+                        var trianglePoints = [];
+                        let contains0 = false;
+                        for ( let k = 1; k < split.length; k++ ) {
+                            trianglePoints.push(getTriangle(split[k]));
+                            if ( trianglePoints[trianglePoints.length-1] === 0 ) contains0 = true;
+                        }
+                        // console.log(trianglePoints);
+
+                        let rem = contains0 ? 0 : 1;
+                        for ( let k = 1; k <= trianglePoints.length-2; k++ ) {
+                            // o3d.addTriangle()
+
+                            let t0 = trianglePoints[0]-rem;
+                            let t1 = trianglePoints[k]-rem;
+                            let t2 = trianglePoints[k+1]-rem;
+
+                            o3d.addTriangle(t0,t1,t2);
+                        }
+                    }
+                }
+            }
+            catch {
+                o3d.setupCube();
+                console.log("failed to read file");
+            }
+        };
+        reader.onprogress = function(event) {
+            console.log(event);
+        }
+        reader.readAsText(file);
+    }
+    else {
+        console.log("Can't read file");
+    }
+  }
+}
+
+var g = null;
+
+function objdragover(ev) {
+    return ev.preventDefault();
 }

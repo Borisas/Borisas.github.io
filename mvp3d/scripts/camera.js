@@ -169,6 +169,10 @@ var camera = function() {
         // ]
 
     }
+
+    this.calculateRelativeDepth = function(depth) {
+        return (far+near)/(far-near) + (1/depth) * ((-2 * far * near) / (far-near));
+    }
     ////changes
 
     this.setPosition = function(p) {

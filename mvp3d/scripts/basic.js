@@ -1,4 +1,61 @@
 
+function p2(x,y) {
+    this.x = x;
+    this.y = y;
+    this.d = 0;
+
+    this.set2 = function(op) {
+        this.x = op.x;
+        this.y = op.y;
+    }
+
+    this.sub2 = function(op) {
+        this.x -= op.x;
+        this.y -= op.y;
+    }
+
+
+
+    this.mag = function() {
+        return Math.sqrt(this.x * this.x + this.y*this.y);
+    }
+}
+
+p2.cross = function(v1,v2) {
+    return v1.x*v2.y - v1.y*v2.x;
+}
+
+function p4(x,y,z,w) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+    this.w = w;
+
+    this.pixel = function() {
+
+        return new p2(
+            Math.round((this.x)/(this.w) * __width + __width/2),
+            Math.round((this.y)/(this.w) * __height + __height/2)
+        );
+    }
+}
+
+p4.m4 = function(m4) {
+    return new p4(m4[0],m4[1],m4[2],m4[3]);
+}
+p4.lerp = function(a,b,t) {
+
+    t = t > 1 ? 1 : t;
+    t = t < 0 ? 0 : t;
+
+    var x = a.x + (b.x-a.x) * t;
+    var y = a.y + (b.y-a.y) * t;
+    var z = a.z + (b.z-a.z) * t;
+    var w = a.w + (b.w-a.w) * t;
+    
+    return new p4(x,y,z,w);
+}
+
 var p3 = function(x,y,z) {
     this.x = x;
     this.y = y;
