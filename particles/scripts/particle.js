@@ -77,8 +77,8 @@ Particle.prototype.update = function(otherParticles) {
     if ( len2 > this.maxSpeed * this.maxSpeed ) {
         let len = Math.sqrt(len2);
         if ( len != 0 ) {
-            this.vx = 0;
-            this.vy = 0;
+            this.vx = (this.vx/len) * this.maxSpeed;
+            this.vy = (this.vy/len) * this.maxSpeed;
         }
     }
     if ( Number.isNaN(this.vx) ) {
