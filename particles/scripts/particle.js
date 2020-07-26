@@ -93,7 +93,7 @@ Particle.prototype.update = function(otherParticles) {
 Particle.prototype.draw = function() {
 
     fill(this.r,this.g,this.b);
-    stroke(255,255,255);
+    stroke(255-this.r,255-this.g,255-this.b);
     ellipse(this.x,this.y,this.radius)
 }
 
