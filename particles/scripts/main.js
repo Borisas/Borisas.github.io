@@ -1,7 +1,7 @@
 
 var particles = [];
 
-var particleCount = 500;
+var particleCount = 350;
 
 var sw = 768;
 var sh = 512;

@@ -17,6 +17,21 @@ function setupAtractions( typecount) {
     return atractions;
 }
 
+function fixDistForLoopingW(x) {
+    if ( Math.abs(x) > sw/2 ) {
+        x = sw - Math.abs(x);
+    }
+    return x;
+}
+
+function fixDistForLoopingH(x) {
+
+    if ( Math.abs(x) > sh/2 ) {
+        x = sh - Math.abs(x);
+    }
+    return x;
+}
+
 
 var Particle = function(r,g,b) {
     //private && vars
@@ -108,7 +123,15 @@ Particle.prototype.fixPos = function() {
 
 Particle.prototype.d = function(o){
 
-    return sqrdist(this.x,this.y, o.x,o.y);
+    let xdiff = this.x - o.x;
+    let ydiff = this.y - o.y;
+
+      // this could work, but the way collision is handle breaks it
+    xdiff = fixDistForLoopingW(xdiff);
+    ydiff = fixDistForLoopingH(ydiff);
+    
+
+    return sqrdist(xdiff,ydiff, 0,0);
 }
 
 Particle.prototype.interact = function(o, dist2) {
@@ -121,20 +144,23 @@ Particle.prototype.interact = function(o, dist2) {
 
 
     
-    let isX = this.x - o.x;
-    let isY = this.y - o.y;
+    let dirX = this.x - o.x;
+    let dirY = this.y - o.y;
+    dirX = fixDistForLoopingW(dirX);
+    dirY = fixDistForLoopingH(dirY);
+
     // i know it's not linear
 
-    let len2 = sqrdist(isX,isY,0,0);
+    let len2 = sqrdist(dirX,dirY,0,0);
     if ( len2 == 0 ) return;
-    let len = Math.sqrt(sqrdist(isX,isY,0,0));
+    let len = Math.sqrt(len2);
     if ( len == 0 ) return;
 
 
     let av = this.attractions[i];
 
-    let asX = av * (isX/len);
-    let asY = av * (isY/len);
+    let asX = av * (dirX/len);
+    let asY = av * (dirY/len);
 
     // if ( Number.isNaN(this.vx) == false ) {
     //     console.log("asX = " + asX + " this.x = " + this.x + " ox = " + o.x + " av = " + av + " len = " + len);
@@ -154,6 +180,9 @@ Particle.prototype.checkCollision = function(o,dist2) {
 
     let dx = this.x - o.x;
     let dy = this.y - o.y;
+    
+    dx = fixDistForLoopingW(dx);
+    dy = fixDistForLoopingH(dy);
 
     let ndx = dx / dist;
     let ndy = dy / dist;
@@ -166,6 +195,9 @@ Particle.prototype.checkCollision = function(o,dist2) {
 
     o.x += -ndx * halfddiff;
     o.y += -ndy * halfddiff;
+    if ( Number.isNaN(this.x) ) {
+        console.log("!");
+    }
 }
 
 //static
