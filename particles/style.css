@@ -1,0 +1,22 @@
+body {
+	background:#121212;
+}
+
+.main {
+	border : 1px solid black;
+
+
+	margin:auto;
+	transform:translateY(50%)
+}
+
+.number {
+	width : 48px;
+	-webkit-appearance: none; 
+}
+
+.options {
+	display: inline-block;
+	border : 1px solid black;
+	padding:5px;
+}
